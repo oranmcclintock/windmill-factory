@@ -1,0 +1,69 @@
+/* Manpage Paper & Ink — Semantic Design Tokens (STYLE_BIBLE.md v1)
+ * :root and .dark OKLCH variables work in plain CSS or any framework.
+ * The @theme inline block maps them into Tailwind CSS v4 utilities (omit if not using Tailwind v4).
+ */
+
+:root {
+  --background: oklch(0.985 0.002 90);
+  --card: oklch(1.000 0.000 0);
+  --muted: oklch(0.955 0.002 90);
+  --border: oklch(0.890 0.003 90);
+  --foreground: oklch(0.145 0.004 90);
+  --muted-foreground: oklch(0.460 0.005 90);
+  --primary: oklch(0.145 0.004 90);
+  --primary-foreground: oklch(0.985 0.002 90);
+  --success: oklch(0.480 0.120 150);
+  --warning: oklch(0.580 0.140 75);
+  --destructive: oklch(0.500 0.180 25);
+
+  --radius: 0.375rem; /* 6px cards/panels/dialogs */
+  --radius-sm: 0.25rem; /* 4px buttons/inputs/badges/code */
+  --font-sans: "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "Geist Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+.dark {
+  --background: oklch(0.130 0.003 260);
+  --card: oklch(0.165 0.003 260);
+  --muted: oklch(0.205 0.004 260);
+  --border: oklch(0.265 0.004 260);
+  --foreground: oklch(0.950 0.002 90);
+  --muted-foreground: oklch(0.650 0.004 90);
+  --primary: oklch(0.950 0.002 90);
+  --primary-foreground: oklch(0.130 0.003 260);
+  --success: oklch(0.680 0.140 150);
+  --warning: oklch(0.750 0.130 75);
+  --destructive: oklch(0.640 0.180 25);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-card: var(--card);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-destructive: var(--destructive);
+  --radius-md: var(--radius);
+  --radius-sm: var(--radius-sm);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+  }
+  code, pre, kbd, .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}

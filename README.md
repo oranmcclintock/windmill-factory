@@ -39,31 +39,33 @@ Paste a task in any repository that has this harness's `AGENTS.md` and the Comma
 
 ```mermaid
 flowchart TD
-    Task["Raw task or coursework brief"] --> Scout["@scout\ntriage and recon"]
+    Task["Raw task, brain dump,<br/>or coursework brief"] --> Commander["Tier 1: Antigravity Commander (Elephant)<br/>maintains ELEPHANT_STATE.md"]
+    Commander --> Scout["scout (flash)<br/>Read-only triage, recon, secret audit"]
 
-    Scout --> CI["CODE_OR_INFRA\nGitOps / K8s / Bash / Python"]
-    Scout --> WW["WINDMILL_WORKFLOW\nPython 3.13 WAC"]
-    Scout --> BA["BUILD_APP\nWeb / PWA / iOS Safari"]
-    Scout --> UC["UNI_COURSEWORK\nRubric + ELEPHANT_STATE.md"]
+    Scout --> CI["CODE_OR_INFRA<br/>GitOps / K8s / Python / TS / Bash"]
+    Scout --> WW["WINDMILL_WORKFLOW<br/>Tier 2 Python 3.13 WAC"]
+    Scout --> BA["BUILD_APP<br/>Web / PWA / iOS Safari<br/>ui-ux + ios-pwa specs"]
+    Scout --> UC["UNI_COURSEWORK<br/>Rubric checklist + task queue"]
 
-    CI --> Arch["@architect\nblueprint + formal invariants\ntask queue"]
+    CI --> Arch["architect<br/>Domain-locked blueprint<br/>Formal invariants + task queue"]
     WW --> Arch
     BA --> Arch
     UC --> Arch
 
-    Arch --> GNG{"Go / No-Go"}
+    Arch --> GNG{"Step 2: Go / No-Go<br/>User approval gate"}
     GNG -->|Rejected| Stop["Stop"]
 
-    GNG -->|Approved| Build["Parallel build\n@builder Windmill MCP\nor self Goldfish workers\nhumanizer pass on prose"]
+    GNG -->|Approved| Build["Step 3: Parallel Build<br/>builder (Windmill MCP drafts) or<br/>TypeName: self Goldfish workers<br/>+ humanizer pass on prose"]
 
-    Build --> GateA["Gate A\nlint + property-based tests\nhypothesis / fast-check / proptest"]
-    GateA --> RT["@red-team\nclean-context adversarial audit"]
+    Build --> GateA["Gate A (Offline)<br/>Lints, static validation,<br/>property-based invariant tests"]
+    GateA --> RT["Step 4: red-team<br/>Clean-context adversarial audit"]
     RT -->|BLOCK| Build
-    RT -->|PASS| GateB["Gate B\nlive end-to-end\nup to 3 self-repair loops"]
-    GateB --> Ev["@evolver\nrule patches to META_RULES.md\nor target AGENTS.md"]
-    Ev --> Done["Verified deliverable"]
+    RT -->|PASS| GateB["Step 5: Gate B (Live Runtime)<br/>Playwright / ArgoCD / live CLI check<br/>up to 3 self-repair loops"]
+    GateB --> Ev["Step 6-7: evolver (flash)<br/>Post-mortem rule patch to<br/>META_RULES.md or target AGENTS.md"]
+    Ev --> Done["Verified Deliverable"]
 
-    WW -.->|Windmill Tier 2| Wmill["Python 3.13 WAC runtime\nzero unattended LLM calls\nretries / checkpoints / webhooks"]
+    WW --> Wmill["Tier 2: Windmill Runtime<br/>Deterministic Python 3.13 WAC<br/>Retries, checkpoints, webhooks<br/>Zero unattended LLM calls"]
+    Wmill --> GateA
 ```
 
 ### Tier 1 (Elephant Orchestrator and Goldfish Workers)

@@ -5,12 +5,14 @@
 *.pem
 *secret*
 *token*
+!templates/ui-kit/tokens.css
 .agents/mcp_config.json
 
 # Python / Node / OS
 __pycache__/
 *.py[cod]
 .venv/
+.ruff_cache/
 node_modules/
 .DS_Store
 
