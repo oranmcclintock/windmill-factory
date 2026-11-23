@@ -1,0 +1,13 @@
+summary: Factory health-check ping
+description: Trivial deterministic Python script to verify Windmill worker execution in the factory workspace.
+lock: ''
+kind: script
+schema:
+  $schema: https://json-schema.org/draft/2020-12/schema
+  type: object
+  properties:
+    message:
+      type: string
+      description: Optional message to echo back
+      default: pong
+  required: []

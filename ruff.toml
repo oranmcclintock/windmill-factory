@@ -1,0 +1,9 @@
+target-version = "py313"
+line-length = 100
+exclude = ["reference", ".agents", ".claude"]
+
+[lint]
+select = ["E", "F", "W", "B", "I", "UP", "C901", "SIM", "ERA"]
+
+[lint.mccabe]
+max-complexity = 10
