@@ -39,36 +39,31 @@ Paste a task in any repository that has this harness's `AGENTS.md` and the Comma
 
 ```mermaid
 flowchart TD
-    Task["Raw task / brain dump\nor coursework brief"] --> Commander
+    Task["Raw task or coursework brief"] --> Scout["@scout\ntriage and recon"]
 
-    subgraph T1["Tier 1 — Antigravity /fleet Commander (Elephant)"]
-        Commander["Commander\nmaintains ELEPHANT_STATE.md"] --> Scout
+    Scout --> CI["CODE_OR_INFRA\nGitOps / K8s / Bash / Python"]
+    Scout --> WW["WINDMILL_WORKFLOW\nPython 3.13 WAC"]
+    Scout --> BA["BUILD_APP\nWeb / PWA / iOS Safari"]
+    Scout --> UC["UNI_COURSEWORK\nRubric + ELEPHANT_STATE.md"]
 
-        Scout["@scout flash\nTriage, recon, secret audit"] --> Domain{"Domain?"}
+    CI --> Arch["@architect\nblueprint + formal invariants\ntask queue"]
+    WW --> Arch
+    BA --> Arch
+    UC --> Arch
 
-        Domain -->|CODE_OR_INFRA| Arch1["@architect\nBlueprint + formal invariants\nGate A: lint, hypothesis,\nfast-check, proptest"]
-        Domain -->|WINDMILL_WORKFLOW| Arch2["@architect\nBlueprint + WAC task graph\n3-gate: ruff, wmill lint,\ntest_run + get_run"]
-        Domain -->|BUILD_APP| Arch3["@architect + @ui-ux + @ios-pwa\nSTYLE_BIBLE tokens\nGEO PUBLIC/PRIVATE\nPlaywright audit"]
-        Domain -->|UNI_COURSEWORK| Arch4["@architect\nRubric checklist\nELEPHANT_STATE.md task queue\nBlueprint + parity inventory"]
+    Arch --> GNG{"Go / No-Go"}
+    GNG -->|Rejected| Stop["Stop"]
 
-        Arch1 & Arch2 & Arch3 & Arch4 --> GoNoGo{"Go / No-Go\napproval"}
-        GoNoGo -->|Rejected| Stop["Stop"]
+    GNG -->|Approved| Build["Parallel build\n@builder Windmill MCP\nor self Goldfish workers\nhumanizer pass on prose"]
 
-        GoNoGo -->|Approved| Build["Parallel build\n@builder Windmill MCP drafts\nor TypeName: self Goldfish workers\nhumanizer pass on all prose"]
+    Build --> GateA["Gate A\nlint + property-based tests\nhypothesis / fast-check / proptest"]
+    GateA --> RT["@red-team\nclean-context adversarial audit"]
+    RT -->|BLOCK| Build
+    RT -->|PASS| GateB["Gate B\nlive end-to-end\nup to 3 self-repair loops"]
+    GateB --> Ev["@evolver\nrule patches to META_RULES.md\nor target AGENTS.md"]
+    Ev --> Done["Verified deliverable"]
 
-        Build --> GateA["Gate A\noffline linting\nproperty-based tests\nstatic analysis"]
-        GateA --> RedTeam["@red-team\nclean-context adversarial audit"]
-        RedTeam -->|BLOCK| Build
-        RedTeam -->|PASS| GateB["Gate B\nlive end-to-end\nup to 3 self-repair iterations"]
-        GateB --> Evolver["@evolver flash\npermanent rule patches\nMETA_RULES.md or target AGENTS.md"]
-    end
-
-    subgraph T2["Tier 2 — Windmill (Deterministic Runtime)"]
-        WM["Python 3.13 WAC\n@workflow + @task\nzero unattended LLM calls\nretries, checkpoints, webhooks"]
-    end
-
-    Arch2 --> WM
-    GateB --> Done["Verified deliverable"]
+    WW -.->|Windmill Tier 2| Wmill["Python 3.13 WAC runtime\nzero unattended LLM calls\nretries / checkpoints / webhooks"]
 ```
 
 ### Tier 1 (Elephant Orchestrator and Goldfish Workers)
