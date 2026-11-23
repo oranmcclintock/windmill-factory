@@ -37,50 +37,38 @@ Paste a task in any repository that has this harness's `AGENTS.md` and the Comma
 
 ## Architecture
 
-```
-flowchart TD is below as a diagram
-```
-
-### Two-tier split
-
-```mermaid
-flowchart LR
-    User["Raw task / brain dump"] --> Commander["Tier 1: Antigravity\n/fleet Commander\n(Elephant)"]
-    Commander --> Scout["@scout\nTriage & recon"]
-    Commander --> Architect["@architect\nBlueprint & invariants"]
-    Commander --> Workers["Goldfish workers\nTypeName: self"]
-    Commander --> Builder["@builder\nWindmill MCP drafts"]
-    Commander --> RedTeam["@red-team\nAdversarial audit"]
-    Commander --> Evolver["@evolver\nRule patches"]
-    Commander --> Windmill["Tier 2: Windmill\nDeterministic runtime\nPython 3.13 WAC"]
-    Workers --> ELEPHANT["ELEPHANT_STATE.md\nPersistent state"]
-    Commander --> ELEPHANT
-```
-
-### 7-step Commander flow
-
 ```mermaid
 flowchart TD
-    S1["Step 1\nRead AGENTS.md + skills\nLoad harness rules"] --> S2["Step 2\n@scout triage\nClassify domain\nCheck repo inventory"]
-    S2 --> S3{"Go / No-Go\nBlueprint review"}
-    S3 -->|Approved| S4["Step 3\n@architect blueprint\nFormal invariants\nELEPHANT_STATE.md task queue"]
-    S4 --> S5["Step 4\nParallel build\n@builder / Goldfish workers\nHumanizer pass"]
-    S5 --> S6["Step 5\nGate A\nLint + property tests\nStatic analysis"]
-    S6 --> S7["Step 6\n@red-team audit\nPASS / CONDITIONAL / BLOCK"]
-    S7 -->|BLOCK| S5
-    S7 -->|PASS| S8["Step 7\nGate B\nLive end-to-end\n@evolver rule patch"]
-    S3 -->|Rejected| END["Stop"]
-```
+    Task["Raw task / brain dump\nor coursework brief"] --> Commander
 
-### Domain routing
+    subgraph T1["Tier 1 — Antigravity /fleet Commander (Elephant)"]
+        Commander["Commander\nmaintains ELEPHANT_STATE.md"] --> Scout
 
-```mermaid
-flowchart LR
-    Task["Incoming task"] --> Scout["@scout classifies"]
-    Scout --> C1["CODE_OR_INFRA\nGitOps, K8s, ArgoCD\nPython / TS / Bash\nGate A + Gate B"]
-    Scout --> C2["WINDMILL_WORKFLOW\nPython 3.13 WAC\n@builder + Windmill MCP\n3-gate Windmill QA"]
-    Scout --> C3["BUILD_APP\nWeb / PWA / iOS Safari\nSTYLE_BIBLE tokens\nPlaywright audit"]
-    Scout --> C4["UNI_COURSEWORK\nELEPHANT_STATE.md\nBlueprint + rubric audit\nBland student deliverables"]
+        Scout["@scout flash\nTriage, recon, secret audit"] --> Domain{"Domain?"}
+
+        Domain -->|CODE_OR_INFRA| Arch1["@architect\nBlueprint + formal invariants\nGate A: lint, hypothesis,\nfast-check, proptest"]
+        Domain -->|WINDMILL_WORKFLOW| Arch2["@architect\nBlueprint + WAC task graph\n3-gate: ruff, wmill lint,\ntest_run + get_run"]
+        Domain -->|BUILD_APP| Arch3["@architect + @ui-ux + @ios-pwa\nSTYLE_BIBLE tokens\nGEO PUBLIC/PRIVATE\nPlaywright audit"]
+        Domain -->|UNI_COURSEWORK| Arch4["@architect\nRubric checklist\nELEPHANT_STATE.md task queue\nBlueprint + parity inventory"]
+
+        Arch1 & Arch2 & Arch3 & Arch4 --> GoNoGo{"Go / No-Go\napproval"}
+        GoNoGo -->|Rejected| Stop["Stop"]
+
+        GoNoGo -->|Approved| Build["Parallel build\n@builder Windmill MCP drafts\nor TypeName: self Goldfish workers\nhumanizer pass on all prose"]
+
+        Build --> GateA["Gate A\noffline linting\nproperty-based tests\nstatic analysis"]
+        GateA --> RedTeam["@red-team\nclean-context adversarial audit"]
+        RedTeam -->|BLOCK| Build
+        RedTeam -->|PASS| GateB["Gate B\nlive end-to-end\nup to 3 self-repair iterations"]
+        GateB --> Evolver["@evolver flash\npermanent rule patches\nMETA_RULES.md or target AGENTS.md"]
+    end
+
+    subgraph T2["Tier 2 — Windmill (Deterministic Runtime)"]
+        WM["Python 3.13 WAC\n@workflow + @task\nzero unattended LLM calls\nretries, checkpoints, webhooks"]
+    end
+
+    Arch2 --> WM
+    GateB --> Done["Verified deliverable"]
 ```
 
 ### Tier 1 (Elephant Orchestrator and Goldfish Workers)
