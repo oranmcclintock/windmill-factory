@@ -13,6 +13,7 @@ Paste a task in any repository that has this harness's `AGENTS.md` and the Comma
 - 4-domain routing: `CODE_OR_INFRA`, `WINDMILL_WORKFLOW`, `BUILD_APP`, and university coursework, each with domain-locked blueprints and verification contracts
 
 **Verification and safety**
+- Independent blind test authoring: a separate Test Author Goldfish receives only the goal and `@architect` spec to write unit, edge-case, and property-based invariant tests before implementation; implementers are forbidden from editing or weakening those tests
 - Gate A: offline linting, formal invariants, and property-based tests (`hypothesis`, `fast-check`, `jqwik`, `proptest`) before anything hits live infra
 - Gate B: live end-to-end path verification with up to 3 self-repair iterations; runs do not stop at `git push`
 - 3-gate Windmill QA: `ruff check .`, `wmill lint`, and live MCP `test_run_*` plus `get_run` log inspection
@@ -55,9 +56,10 @@ flowchart TD
     Arch --> GNG{"Step 2: Go / No-Go<br/>User approval gate"}
     GNG -->|Rejected| Stop["Stop"]
 
-    GNG -->|Approved| Build["Step 3: Parallel Build<br/>builder (Windmill MCP drafts) or<br/>TypeName: self Goldfish workers<br/>+ humanizer pass on prose"]
+    GNG -->|Approved| TestAuth["Step 3a: Test Author Goldfish<br/>Blind to implementation<br/>Writes immutable tests from goal + spec"]
+    TestAuth --> Build["Step 3b: Parallel Build<br/>builder (Windmill MCP drafts) or<br/>TypeName: self Goldfish workers<br/>+ humanizer pass on prose"]
 
-    Build --> GateA["Gate A (Offline)<br/>Lints, static validation,<br/>property-based invariant tests"]
+    Build --> GateA["Gate A (Offline)<br/>Lints, static validation,<br/>immutable + property-based tests"]
     GateA --> RT["Step 4: red-team<br/>Clean-context adversarial audit"]
     RT -->|BLOCK| Build
     RT -->|PASS| GateB["Step 5: Gate B (Live Runtime)<br/>Playwright / ArgoCD / live CLI check<br/>up to 3 self-repair loops"]

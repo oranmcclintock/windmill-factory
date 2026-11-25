@@ -16,5 +16,9 @@ __pycache__/
 node_modules/
 .DS_Store
 
-# Scratch & local deliverables
+# Scratch, local state & private machine config — NEVER commit
 coursework/
+ELEPHANT_STATE.md
+REPO_REGISTRY.json
+aic.txt
+*.local.md

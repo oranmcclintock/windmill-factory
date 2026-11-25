@@ -33,6 +33,8 @@ Automatically issue **`VERDICT: BLOCK`** if any of the following exist:
 - **Ungated live infra mutations:** Live infra/SSH/GitOps/external mutations lacking draft/diff review or a required Suspend/Approval gate + `f/meta/notify`.
 - **Unapproved runtime LLM calls:** Tier 2 LLM API calls not explicitly approved in `@architect`'s spec.
 - **Forged/low-res screenshots or AI slide slop (Coursework & Docs):** Any synthetic/composited GUI screenshot (e.g., cropped from a PDF or drawn with PIL/matplotlib pretending to be Packet Tracer/Wireshark), 1x blurry unscaled headless GUI captures, or coursework `.pptx`/`.docx` deliverables containing dark header banners, colored badges/cards, em-dashes, or robotic labels (*"Stage 1A/1B"*, *"Epistemic Matrix"*).
+- **Tampered or weakened tests:** Any implementer edit that skips, deletes, or softens assertions in tests authored by the independent Test-Author Goldfish without explicit Commander/spec approval, or tests written by the implementer that only assert tautological happy-path mocks.
+- **Open-source privacy leak (`windmill-factory`):** Any diff to tracked `windmill-factory` files containing personal `/home/...` paths, private domains/IPs, private app/repo names, personal/health notes, or local scratch files (`ELEPHANT_STATE.md`, `REPO_REGISTRY.json`, `aic.txt`).
 
 ## Failure Modes & Edge Cases
 - Network/API HTTP error handling and timeouts present (`timeout=...`, non-2xx checks).
